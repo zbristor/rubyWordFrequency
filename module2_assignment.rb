@@ -15,15 +15,24 @@ class LineAnalyzer
     @content = content
     @line_number = line_number
     @highest_wf_count = highest_wf_count
-    
+    calculate_word_frequency()
   end
-  def calculate_word_frequency(content)
+  def calculate_word_frequency()
     #lineArr = content.split /(?=[A-Z])/
     newArr = content.split(" ")
-    newArr.times do |index|
-      @@highest_wf_count = newArr.select.newArr[index].max{newArr.count}
-      @@highest_wf_words << newArr.select.newArr[index].max{newArr.count}.text
+   
+    count = 0
+    wordIndex = 0
+    newArr.length do |index|
+      word = newArr[wordIndex]
+      if newArr[index] == word
+        count += 1
+        p "count is #{count}"
+      end
+      #@@highest_wf_count = newArr.select.newArr[index].max{newArr.count}
+      #@@highest_wf_words << newArr.select.newArr[index].max{newArr.count}.text
       #newArr.select.{|index| index.max{newArr.count}?.text
+      
     end
   end
 end
@@ -72,13 +81,13 @@ class Solution
   end
 
   def calculate_line_with_highest_frequency()
-    #analyzers.times do |index|
-      highest_count_across_lines = analyzers.LineAnalyzer.highest_wf_count
-     
-    highest_count_words_across_lines = analyzers.highest_wf_count.equal(highest_count_across_lines)
+    analyzers.length do |index|
+      highest_count_across_lines = analyzers[index].highest_wf_count.max 
+      highest_count_words_across_lines = analyzers[index].highest_wf_count==(highest_count_across_lines)
+    end
   end
 
-  def print_highest_word_frequency_acrososs_lines()
+  def print_highest_word_frequency_across_lines()
     puts highest_count_words_across_lines
   end
 end
