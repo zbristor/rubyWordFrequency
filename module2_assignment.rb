@@ -10,7 +10,6 @@ class LineAnalyzer
   #* line_number      - the line number analyzed (provided)
   
 
-  
   def initialize(content, line_number)
     @content = content
     @line_number = line_number
@@ -34,7 +33,7 @@ class LineAnalyzer
     finArr.reject! { |item| item.nil? || item == [] }
     finArr.reject! { |item| item.nil? || item == nil}
     for i in 0..finArr.length-1
-      
+
       if finArr.slice(i).values_at(0).join.to_f.to_i ==  finArr.max.values_at(0).join.to_f.to_i
         @highest_wf_words <<  finArr.slice(i).values_at(1).join.to_s
         @highest_wf_count =  finArr.max.values_at(0).join.to_f.to_i
@@ -83,29 +82,32 @@ class Solution
   #  equal to the highest_count_across_lines determined previously.
   attr_accessor :analyzers, :highest_count_across_lines, :highest_count_words_across_lines
   
-
+  def initialize
+    @analyzers = []
+  end
   def analyze_file()
       lineCount = 0
       fil = File.open( 'test.txt' )
-      @analyzers = []
+      
       fil.each_line do |line|
-        
         lineCount +=1
+        #p LineAnalyzer.new(line, lineCount)
         @analyzers << LineAnalyzer.new(line, lineCount)
-       # p @analyzers
+        p @analyzers.length
       end
   end
 
   def calculate_line_with_highest_frequency()
+    
     countArr =[]
     @highest_count_words_across_lines = []
     @analyzers.each do |index|
       #p index.highest_wf_words
       countArr << index.highest_wf_count
       @highest_count_across_lines = countArr.max
-      p countArr.max
+      #p countArr.max
       if index.highest_wf_count == highest_count_across_lines
-        p index.highest_wf_words
+        #p index.highest_wf_words
         @highest_count_words_across_lines << index
         @highest_count_words_across_lines.flatten
         #p @highest_count_words_across_lines.flatten
