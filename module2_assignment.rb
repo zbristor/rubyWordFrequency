@@ -10,7 +10,7 @@ class LineAnalyzer
   #* line_number      - the line number analyzed (provided)
   
 
-  #@@highest_wf_words = []
+  
   def initialize(content, line_number)
     @content = content
     @line_number = line_number
@@ -20,7 +20,7 @@ class LineAnalyzer
   end
   def calculate_word_frequency()
     #lineArr = content.split /(?=[A-Z])/
-    newArr = content.downcase.split(" ")
+    newArr = @content.downcase.split(" ")
     finArr = Array.new(newArr.length) { Array.new }
     
     for i in 0..newArr.length
@@ -33,9 +33,8 @@ class LineAnalyzer
     finArr.reject! { |item| item.nil? || item == [0,""] }
     finArr.reject! { |item| item.nil? || item == [] }
     finArr.reject! { |item| item.nil? || item == nil}
-    p finArr.uniq
     for i in 0..finArr.length-1
-      p 
+      
       if finArr.slice(i).values_at(0).join.to_f.to_i ==  finArr.max.values_at(0).join.to_f.to_i
         @highest_wf_words <<  finArr.slice(i).values_at(1).join.to_s
         @highest_wf_count =  finArr.max.values_at(0).join.to_f.to_i
@@ -87,25 +86,38 @@ class Solution
 
   def analyze_file()
       lineCount = 0
-      fil = File.foreach( 'C:\Users\Zack\Documents\graded-assignments\graded-assignments\course01\module02\assignment-Calc-Max-Word-Freq\test.txt' )
-      fil.each do |line|
+      fil = File.open( 'test.txt' )
+      @analyzers = []
+      fil.each_line do |line|
+        
         lineCount +=1
-        @analyzers ||= []
         @analyzers << LineAnalyzer.new(line, lineCount)
-        p analyzers
+       # p @analyzers
       end
   end
 
   def calculate_line_with_highest_frequency()
-    analyzers.length do |index|
-
-      highest_count_across_lines = analyzers[index].calculate_word_frequency().max
-      highest_count_words_across_lines = analyzers[index].highest_wf_count==(highest_count_across_lines)
-    end
+    countArr =[]
+    @highest_count_words_across_lines = []
+    @analyzers.each do |index|
+      #p index.highest_wf_words
+      countArr << index.highest_wf_count
+      @highest_count_across_lines = countArr.max
+      p countArr.max
+      if index.highest_wf_count == highest_count_across_lines
+        p index.highest_wf_words
+        @highest_count_words_across_lines << index
+        @highest_count_words_across_lines.flatten
+        #p @highest_count_words_across_lines.flatten
+      end
+      end
   end
 
   def print_highest_word_frequency_across_lines()
-    puts highest_count_words_across_lines
+    p "The following words have the highest word frequency per line: "
+    @analyzers.each do |index|
+      p "#{index.highest_wf_words} (appears in line #{index.line_number})"
+    end
   end
 end
 
