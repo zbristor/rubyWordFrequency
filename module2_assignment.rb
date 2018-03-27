@@ -21,29 +21,29 @@ class LineAnalyzer
   def calculate_word_frequency()
     #lineArr = content.split /(?=[A-Z])/
     newArr = content.downcase.split(" ")
-    finArr = Array.new
+    finArr = Array.new(newArr.length) { Array.new }
     
     for i in 0..newArr.length
         count = newArr.count(newArr[i])
-        addArr = [count, "#{newArr[i]}"]
+        addArr = [count.to_i, "#{newArr[i]}"]
         finArr << addArr
     end
     co = 0
     #finArr.sort!.delete_at(0)
-    finArr.reject! { |item| item.nil? || item == '' }
-    p finArr
-    for i in 0..finArr.length
-      p finArr[i]
-      #p @highest_wf_words.last(co.uniq)
-      if finArr[i] == finArr[i]
-        co +=1
-        finArr.reject! { |item| item.nil? || item == nil }
-        @highest_wf_words << finArr[i]
-        @highest_wf_count = finArr[i]
-        p highest_wf_count
-        @highest_wf_words.uniq!
+    finArr.reject! { |item| item.nil? || item == [0,""] }
+    finArr.reject! { |item| item.nil? || item == [] }
+    finArr.reject! { |item| item.nil? || item == nil}
+    p finArr.uniq
+    for i in 0..finArr.length-1
+      p 
+      if finArr.slice(i).values_at(0).join.to_f.to_i ==  finArr.max.values_at(0).join.to_f.to_i
+        @highest_wf_words <<  finArr.slice(i).values_at(1).join.to_s
+        @highest_wf_count =  finArr.max.values_at(0).join.to_f.to_i
+        @highest_wf_words.sort!.uniq!
+        #p 
       end
     end
+
 
     
     #for i in 0..finArr.length
