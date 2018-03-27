@@ -20,34 +20,25 @@ class LineAnalyzer
   end
   def calculate_word_frequency()
     #lineArr = content.split /(?=[A-Z])/
-    newArr = content.split(" ")
-    finArr = Array.new()
-    finArr[0] = 0
-    word = newArr[0]
-    count = 0 
-    newArr.each do |index|
-      if index == word
-        count += 1
+    newArr = content.downcase.split(" ")
+    finArr = []
+    
+    for i in 0..newArr.length
+        count = newArr.count(newArr[i])
+        addArr = [count, "#{newArr[i]}"]
+        finArr << addArr
+    end
+    p finArr.sort.uniq
+    for i in 0..finArr.length
+      if finArr[i]==finArr.max
+        @highest_wf_words << finArr[i]
       end
+    end
 
-      if(count>finArr[0])
-        finArr[0] = count
-
-        @highest_wf_count = count
-        @highest_wf_words.delete_at(0)
-        @highest_wf_words << index
-        @highest_wf_words.select{|item| @highest_wf_words.count(item)>1}.uniq
-        
-      #elsif(count==finArr[0])
-       # @highest_wf_words << index
-
-      end
-      
-      p count 
-      p highest_wf_words
-
-      word = index
-    end 
+    p @highest_wf_words.uniq
+    #for i in 0..finArr.length
+     # if finArr[i][0][0].eq?finArr[i+1]
+    #end
   end
 end
 
